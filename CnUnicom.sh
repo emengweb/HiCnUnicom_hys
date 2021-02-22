@@ -271,6 +271,7 @@ function hfgoactive() {
     ACTID="$(curl -X POST -sA "$UA" -b $workdir/cookie_hfgo --data "positionType=1" https://hfgo.wo.cn/hfgoapi/product/ad/list | grep -oE "atplottery[^?]*" | cut -f2 -d/)"
     curl -sLA "$UA" -b $workdir/cookie_hfgo -c $workdir/cookie_hfgo "https://hfgo.wo.cn/hfgoapi/cuuser/auth/autoLogin?redirectUrl=https://atp.bol.wo.cn/atplottery/${ACTID}?product=hfgo&ch=002&$(cat $workdir/cookie_hfgo | grep -oE "[^_]token.*" | sed s/[[:space:]]//g | sed "s/token/Authorization=/")" >/dev/null
     for ((i = 1; i <= 7; i++)); do
+
         echo
         curl -sA "$UA"  -b $workdir/cookie_hfgo "https://atp.bol.wo.cn/atpapi/act/lottery/start/v1/actPath/${ACTID}/0" >$workdir/lottery_hfgo.log
         cat $workdir/lottery_hfgo.log
@@ -325,6 +326,7 @@ function otherinfo() {
     echo 可用余额:$curntbalancecust 实时话费:$realfeecust >>$workdir/otherinfo.info
     #
     cat $workdir/otherinfo.info
+
 }
 
 function main() {
@@ -333,6 +335,7 @@ function main() {
         sleep $(shuf -i 1-10 -n 1)
         username=${all_username_password[u]%@*} && password=${all_username_password[u]#*@}
         workdir="${workdirbase}_${username}" && [[ ! -d "$workdir" ]] && mkdir $workdir
+
         userlogin && userlogin_ook[u]=$(echo ${username:0:2}******${username:8}) || { userlogin_err[u]=$(echo ${username:0:2}******${username:8}); continue; }
         membercenter
         liulactive
@@ -340,6 +343,7 @@ function main() {
         jifeninfo
         otherinfo
         tgbotinfo
+
         #rm -rf $workdir
     done
     echo; echo $(date) ${userlogin_err[*]} ${#userlogin_err[*]} Failed. ${userlogin_ook[*]} ${#userlogin_ook[*]} Accomplished.
