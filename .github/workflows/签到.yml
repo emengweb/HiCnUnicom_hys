@@ -1,11 +1,11 @@
 name: 签到
 
 on:
-  #push:
+#push:
     #branches: [ master ]
   workflow_dispatch:
   schedule:
-    - cron: 30 23 * * ?
+    - cron: '0 16 * * *'
   watch:
     types: started
     
